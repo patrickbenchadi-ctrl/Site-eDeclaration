@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": 1,
+    "cat": "Guichet Unique",
+    "date": "15 mars 2026",
+    "title": "Guichet Unique : bilan 2025 et ce qui change en 2026",
+    "tags": "#GuichetUnique #Formalités #eDéclaration #DématFacile #Formaliste",
+    "body": "Lancé le 1er janvier 2022 et rendu obligatoire un an plus tard, le Guichet Unique (GU) a profondément reconfiguré le paysage des formalités d'entreprises en France. Fini les six réseaux de Centres de Formalités des Entreprises (CFE) : une seule plateforme, opérée par l'INPI, centralise désormais l'ensemble des démarches de création, modification et cessation d'activité.\n\nUn démarrage difficile mais une montée en charge progressive. Depuis le second semestre 2023, la plateforme est pleinement opérationnelle.\n\nCe qui change en 2026 : amélioration du suivi en temps réel, renforcement de l'espace mandataire, API ouverte aux éditeurs de logiciels. Les plateformes comme eDéclaration × Démat-Facile exploitent cette API pour offrir une expérience métier fluide, un taux de rejet minimal et une assistance humaine dédiée."
+  },
+  {
+    "id": 2,
+    "cat": "RNE",
+    "date": "28 février 2026",
+    "title": "Le Registre National des Entreprises (RNE) : ce que les formalistes doivent savoir",
+    "tags": "#RNE #GuichetUnique #Formalités #eDéclaration #DématFacile",
+    "body": "Créé par la loi PACTE, le RNE est le nouveau registre de référence de l'État pour les entreprises françaises. Opéré par l'INPI, il se substitue au RNCS, au Répertoire des Métiers et au Registre des Actifs Agricoles.\n\nLe RNE centralise toutes les informations légales : identité du dirigeant, forme juridique, capital social, siège social, activité (code APE), bénéficiaires effectifs. Ces données sont accessibles sur registre.entreprises.gouv.fr.\n\nLe SIRET reste l'identifiant de référence de chaque établissement. Sur eDéclaration × Démat-Facile, la recherche par SIRET permet de préremplir automatiquement les informations de la société pour gagner un temps précieux."
+  },
+  {
+    "id": 3,
+    "cat": "Réglementation",
+    "date": "10 février 2026",
+    "title": "Bénéficiaires effectifs : obligations 2026 et risques en cas de défaut",
+    "tags": "#BénéficiairesEffectifs #Réglementation #Formalités #eDéclaration #DématFacile",
+    "body": "La déclaration des bénéficiaires effectifs (BE) est obligatoire depuis 2017 pour toutes les sociétés immatriculées en France. Est bénéficiaire effectif toute personne physique qui détient, directement ou indirectement, plus de 25 % du capital ou des droits de vote.\n\nEn 2026, les contrôles se renforcent. Le défaut de déclaration expose les dirigeants à des sanctions pénales pouvant aller jusqu'à 6 mois d'emprisonnement et 7 500 euros d'amende.\n\nSur eDéclaration × Démat-Facile, la déclaration des bénéficiaires effectifs est intégrée au workflow de constitution et de modification avec alerte automatique en cas de mise à jour nécessaire."
+  },
+  {
+    "id": 4,
+    "cat": "Formalités",
+    "date": "25 janvier 2026",
+    "title": "Constitution de société en 2026 : les étapes clés et les erreurs à éviter",
+    "tags": "#Constitution #Formalités #GuichetUnique #eDéclaration #DématFacile #Formaliste",
+    "body": "La constitution d'une société suit quatre étapes incontournables : rédaction des statuts, dépôt du capital sur compte bloqué, publication de l'annonce légale dans le département du siège, et dépôt au Guichet Unique.\n\nLes erreurs les plus fréquentes : incohérences entre statuts et formulaire, attestation de dépôt mal libellée, annonce légale publiée dans le mauvais département.\n\neDéclaration × Démat-Facile détecte ces incohérences automatiquement avant toute transmission et réduit le taux de rejet à son minimum."
+  },
+  {
+    "id": 5,
+    "cat": "Marché",
+    "date": "18 janvier 2026",
+    "title": "Acteurs des formalités d'entreprises : panorama d'un marché en pleine mutation",
+    "tags": "#Formalités #LegalTech #GuichetUnique #eDéclaration #DématFacile #Marché",
+    "body": "Le marché français des formalités connaît une recomposition profonde depuis janvier 2023. Les 148 greffes des tribunaux de commerce restent les valideurs finaux pour les sociétés commerciales immatriculées au RCS.\n\nL'INPI opère le Guichet Unique et le RNE. Les plateformes mandataires comme eDéclaration × Démat-Facile proposent des interfaces professionnelles pour traiter les formalités en volume avec contrôle qualité, assistance humaine et intégration logiciel.\n\nL'intelligence artificielle s'impose comme le principal vecteur de différenciation en 2026. Les plateformes qui analysent automatiquement les documents juridiques prennent un avantage décisif."
+  },
+  {
+    "id": 6,
+    "cat": "Guichet Unique",
+    "date": "8 janvier 2026",
+    "title": "Dépôt des comptes annuels au Guichet Unique : mode d'emploi 2026",
+    "tags": "#DépôtDesComptes #GuichetUnique #Formalités #eDéclaration #DématFacile",
+    "body": "Le dépôt des comptes annuels doit être effectué dans le mois suivant l'approbation des comptes par l'assemblée générale (deux mois par voie électronique). Toutes les sociétés commerciales soumises à l'obligation comptable sont concernées : SARL, SAS, SA, SNC, etc.\n\nLes documents (bilan, compte de résultat, annexe, PV d'AG) doivent être au format PDF. La signature électronique qualifiée est requise. Le greffe instruit le dossier en 5 à 10 jours ouvrés en moyenne.\n\nSur eDéclaration × Démat-Facile, le module de dépôt des comptes permet de préparer et transmettre le dossier en quelques minutes avec vérification automatique de cohérence."
+  },
+  {
+    "id": 7,
+    "cat": "RNE",
+    "date": "15 décembre 2025",
+    "title": "RNE et RNCS : comprendre la transition et ses implications pratiques",
+    "tags": "#RNE #RNCS #Formalités #GuichetUnique #eDéclaration #DématFacile",
+    "body": "Le RNCS ne contenait que les données des sociétés immatriculées au RCS. Le RNE, lui, centralise l'ensemble des entreprises françaises quelle que soit leur nature : sociétés commerciales, artisans, agriculteurs, professions libérales.\n\nContrairement à une idée reçue, le RCS n'a pas disparu. Il continue d'être tenu par les greffes et alimente le RNE. L'extrait Kbis reste le document officiel attestant de l'immatriculation d'une société.\n\nL'API INPI permet aux éditeurs de logiciels d'interroger le RNE pour préremplir automatiquement les dossiers. eDéclaration × Démat-Facile exploite cette API pour proposer une recherche par SIRET avec préremplissage automatique."
+  },
+  {
+    "id": 8,
+    "cat": "Réglementation",
+    "date": "28 novembre 2025",
+    "title": "Transfert de siège social : les pièges à éviter selon le ressort du greffe",
+    "tags": "#TransfertSiège #Formalités #GuichetUnique #eDéclaration #DématFacile #Formaliste",
+    "body": "Lorsque le nouveau siège reste dans le ressort du même tribunal de commerce, une seule publication légale suffit et la formalité est traitée plus rapidement.\n\nEn cas de transfert hors ressort, deux publications légales sont nécessaires et deux greffes sont impliqués : l'ancien procède à la radiation, le nouveau à la réimmatriculation. L'adresse du nouveau siège doit être justifiée par un document probant.\n\nSur eDéclaration × Démat-Facile, le module de transfert de siège détecte automatiquement si le transfert est intra ou extra-ressort et guide le formaliste étape par étape."
+  },
+  {
+    "id": 9,
+    "cat": "IA & Innovation",
+    "date": "10 novembre 2025",
+    "title": "Intelligence artificielle et formalités : où en est-on vraiment en 2026 ?",
+    "tags": "#IA #Innovation #Formalités #LegalTech #eDéclaration #DématFacile",
+    "body": "Les applications les plus abouties permettent l'analyse automatique de documents juridiques et l'extraction des données pour remplir les formulaires de formalités. L'assistant IA d'eDéclaration × Démat-Facile analyse un jeu de statuts en 30 secondes et remplit automatiquement 100 % des champs du dossier de constitution.\n\nL'IA ne se substitue pas à l'expertise juridique. Elle ne vérifie pas la validité des clauses statutaires et ne détecte pas les incohérences juridiques complexes. La validation humaine reste indispensable avant toute transmission au Guichet Unique.\n\nNotre IA est développée en interne et hébergée en Europe — aucune donnée n'est transmise à des tiers hors UE. Conformité RGPD totale garantie."
+  },
+  {
+    "id": 10,
+    "cat": "Guichet Unique",
+    "date": "25 octobre 2025",
+    "title": "Mandataire au Guichet Unique : droits, obligations et bonnes pratiques",
+    "tags": "#Mandataire #GuichetUnique #Formalités #eDéclaration #DématFacile #Formaliste",
+    "body": "Un mandataire est toute personne agissant au nom d'une entreprise dans le cadre d'une formalité. Il doit disposer d'un mandat écrit signé par le représentant légal, joint au dossier de formalité.\n\nLe mandataire crée un compte utilisateur sur le Guichet Unique. Il peut créer un compte administrateur permettant à ses collaborateurs d'accéder à l'ensemble des dossiers du cabinet. eDéclaration × Démat-Facile simplifie cette gestion avec un espace multi-utilisateurs intégré.\n\nLe mandataire est responsable de l'exactitude des informations déclarées. En cas d'erreur, il engage sa responsabilité professionnelle. Le contrôle qualité intégré d'eDéclaration × Démat-Facile réduit ce risque au minimum."
+  }
+]
