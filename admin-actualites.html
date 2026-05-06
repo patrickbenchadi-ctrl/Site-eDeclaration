@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Actualités eDéclaration</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1840B0;--gold:#F5A623;--dark:#0E1A3A;--text:#2C3356;--muted:#6B7399;--border:#DDE4F5;--green:#059669;}
+body{font-family:"Plus Jakarta Sans",sans-serif;background:#F0F4FF;color:var(--text);min-height:100vh;}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
+.login-card{background:white;border-radius:20px;padding:48px 40px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(24,64,176,0.15);text-align:center;}
+.login-logo{font-size:36px;margin-bottom:8px;}
+.login-card h1{font-size:22px;font-weight:800;color:var(--dark);margin-bottom:4px;}
+.login-card p{font-size:13px;color:var(--muted);margin-bottom:32px;}
+.login-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;text-align:left;}
+.login-field label{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);}
+.login-field input{border:0.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:inherit;font-size:14px;color:var(--dark);background:#F7F9FF;outline:none;transition:border-color 0.2s;}
+.login-field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,64,176,0.1);background:white;}
+.login-btn{width:100%;background:var(--blue);color:white;border:none;border-radius:10px;padding:13px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;margin-top:8px;transition:background 0.2s;}
+.login-btn:hover{background:#0E2A8A;}
+.login-error{color:#DC2626;font-size:13px;margin-top:12px;display:none;font-weight:600;}
+.login-hint{font-size:11px;color:var(--muted);margin-top:16px;line-height:1.6;}
+
+/* ADMIN */
+#admin-screen{display:none;}
+.admin-bar{background:var(--dark);color:white;padding:12px 2rem;display:flex;align-items:center;justify-content:space-between;}
+.admin-bar-left{display:flex;align-items:center;gap:12px;}
+.admin-badge{background:#F5A623;color:#0E1A3A;font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;letter-spacing:0.08em;text-transform:uppercase;}
+.admin-bar h1{font-size:15px;font-weight:700;color:white;}
+.admin-bar-right{display:flex;align-items:center;gap:12px;}
+.btn-logout{background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.2);color:white;border-radius:6px;padding:6px 14px;font-family:inherit;font-size:12px;cursor:pointer;}
+.btn-logout:hover{background:rgba(255,255,255,0.2);}
+
+.admin-body{max-width:1200px;margin:0 auto;padding:32px 2rem;display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start;}
+@media(max-width:900px){.admin-body{grid-template-columns:1fr;}}
+
+/* ÉDITEUR */
+.editor-card{background:white;border-radius:16px;padding:32px;border:0.5px solid var(--border);}
+.editor-card h2{font-size:18px;font-weight:800;color:var(--dark);margin-bottom:4px;}
+.editor-card .sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.field-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.field-group label{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);}
+.field-group input,.field-group select,.field-group textarea{border:0.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:inherit;font-size:14px;color:var(--dark);background:#F7F9FF;outline:none;transition:border-color 0.2s;width:100%;}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,64,176,0.1);background:white;}
+.field-group textarea{resize:vertical;min-height:160px;line-height:1.65;}
+.char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:4px;}
+.char-count.warn{color:#D97706;}
+.char-count.over{color:#DC2626;font-weight:700;}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.btn-add{background:var(--blue);color:white;border:none;border-radius:10px;padding:13px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:background 0.2s;}
+.btn-add:hover{background:#0E2A8A;}
+.btn-clear{background:transparent;color:var(--muted);border:0.5px solid var(--border);border-radius:10px;padding:13px;font-family:inherit;font-size:13px;cursor:pointer;}
+.btn-dl{background:var(--dark);color:white;border:none;border-radius:10px;padding:13px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;width:100%;margin-top:10px;}
+.btn-dl:hover{background:#1840B0;}
+.success-toast{display:none;background:#DCFCE7;border:0.5px solid #86EFAC;border-radius:8px;padding:12px 16px;font-size:13px;color:#15803D;font-weight:600;margin-top:12px;text-align:center;}
+.tip{background:#F0F5FF;border-radius:10px;padding:14px;font-size:12px;color:var(--muted);line-height:1.7;margin-top:14px;}
+.tip strong{color:var(--dark);}
+
+/* LINKEDIN PREVIEW */
+.li-card{background:white;border-radius:16px;padding:28px;border:0.5px solid var(--border);position:sticky;top:20px;}
+.li-card h2{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:4px;}
+.li-card .sub{font-size:12.5px;color:var(--muted);margin-bottom:20px;}
+.li-preview{background:#F3F2EF;border-radius:10px;padding:18px;font-size:13.5px;color:#1C1C1C;line-height:1.75;min-height:120px;white-space:pre-wrap;word-break:break-word;border:1px solid #E0DDD8;max-height:320px;overflow-y:auto;margin-bottom:14px;}
+.li-preview.empty{color:#94A3B8;font-style:italic;}
+.li-stats{display:flex;gap:12px;margin-bottom:14px;font-size:12px;color:var(--muted);}
+.li-stat{display:flex;align-items:center;gap:4px;}
+.li-stat.ok{color:var(--green);}
+.li-stat.warn{color:#D97706;}
+.li-stat.over{color:#DC2626;}
+.btn-copy-li{width:100%;background:#0A66C2;color:white;border:none;border-radius:10px;padding:13px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 0.2s;margin-bottom:8px;}
+.btn-copy-li:hover{background:#004182;}
+.btn-copy-li.copied{background:var(--green);}
+.btn-open-li{width:100%;background:white;color:#0A66C2;border:1px solid #0A66C2;border-radius:10px;padding:11px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;text-decoration:none;}
+.btn-open-li:hover{background:#EFF6FF;}
+.li-sep{text-align:center;font-size:11px;color:var(--muted);margin:10px 0;}
+
+/* ARTICLES LIST */
+.articles-section{margin-top:32px;}
+.articles-section h2{font-size:17px;font-weight:800;color:var(--dark);margin-bottom:16px;}
+.article-item{background:white;border:0.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start;}
+.article-item-content{flex:1;}
+.article-item h3{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.article-item p{font-size:12.5px;color:var(--muted);line-height:1.6;}
+.article-item-actions{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
+.btn-li-item{background:#0A66C2;color:white;border:none;border-radius:6px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.btn-li-item:hover{background:#004182;}
+.btn-li-item.copied{background:var(--green);}
+.btn-del{background:transparent;color:#94A3B8;border:0.5px solid var(--border);border-radius:6px;padding:7px 14px;font-family:inherit;font-size:12px;cursor:pointer;}
+.btn-del:hover{color:#DC2626;border-color:#DC2626;}
+.cat-pill{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:#E6F1FB;color:var(--blue);padding:2px 8px;border-radius:100px;display:inline-block;margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ LOGIN ════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">🔐</div>
+    <h1>Espace Administration</h1>
+    <p>eFormalités™ — Gestion des actualités</p>
+    <div class="login-field">
+      <label>Identifiant</label>
+      <input type="text" id="login-user" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Mot de passe</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin();">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Se connecter →</button>
+    <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
+    <div class="login-hint">Accès réservé à l'équipe eDéclaration.<br>Fichier : admin-actualites.html</div>
+  </div>
+</div>
+
+<!-- ════════════════════ ADMIN ════════════════════ -->
+<div id="admin-screen">
+
+  <div class="admin-bar">
+    <div class="admin-bar-left">
+      <span class="admin-badge">Admin</span>
+      <h1>Gestion des actualités — eFormalités™</h1>
+    </div>
+    <div class="admin-bar-right">
+      <span id="admin-name" style="font-size:13px;color:rgba(255,255,255,0.6);"></span>
+      <button class="btn-logout" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- COLONNE GAUCHE -->
+    <div>
+      <!-- ÉDITEUR -->
+      <div class="editor-card">
+        <h2>✏️ Nouvel article</h2>
+        <p class="sub">Rédigez votre article, prévisualisez le post LinkedIn et publiez en un clic.</p>
+
+        <div class="field-group">
+          <label>Titre de l'article *</label>
+          <input type="text" id="art-title" placeholder="Ex : Nouveautés Guichet Unique 2026" oninput="updatePreview()">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="field-group">
+            <label>Catégorie</label>
+            <select id="art-cat" onchange="updatePreview()">
+              <option value="Actualité">Actualité</option>
+              <option value="Guichet Unique">Guichet Unique</option>
+              <option value="RNE">RNE</option>
+              <option value="Réglementation">Réglementation</option>
+              <option value="Formalités">Formalités</option>
+              <option value="IA & Innovation">IA & Innovation</option>
+              <option value="Annonces légales">Annonces légales</option>
+              <option value="eDéclaration">eDéclaration</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Date <span style="font-weight:400;text-transform:none;font-size:10px;">(vide = aujourd'hui)</span></label>
+            <input type="text" id="art-date" placeholder="Ex : 6 avril 2026">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Contenu de l'article *</label>
+          <textarea id="art-body" placeholder="Rédigez ou collez votre article ici..." oninput="updatePreview();updateCharCount();"></textarea>
+          <div class="char-count" id="char-count">0 caractères</div>
+        </div>
+
+        <div class="field-group">
+          <label>Hashtags LinkedIn <span style="font-weight:400;text-transform:none;font-size:10px;">(séparés par des espaces)</span></label>
+          <input type="text" id="art-hashtags" value="#Formalités #GuichetUnique #eDéclaration #DématFacile #Formaliste #LegalTech" oninput="updatePreview()">
+        </div>
+
+        <button class="btn-add" onclick="addArticle()">➕ Ajouter l'article à la liste</button>
+        <div class="btn-row">
+          <button class="btn-clear" onclick="clearForm()">Effacer le formulaire</button>
+          <button class="btn-clear" onclick="downloadPage()" style="background:#0E1A3A;color:white;border-color:#0E1A3A;">⬇ Télécharger actualites.html</button>
+        </div>
+        <div class="success-toast" id="success-toast">✅ Article ajouté avec succès !</div>
+        <div class="tip">
+          <strong>📋 Pour publier sur le site :</strong><br>
+          1. Ajoutez vos articles<br>
+          2. Cliquez <strong>Télécharger actualites.html</strong><br>
+          3. Uploadez le fichier sur OVH → en ligne immédiatement !
+        </div>
+      </div>
+
+      <!-- LISTE DES ARTICLES -->
+      <div class="articles-section">
+        <h2>📰 Articles (<span id="art-count">0</span>)</h2>
+        <div id="articles-list"></div>
+        <div id="no-articles" style="background:white;border:0.5px dashed var(--border);border-radius:12px;padding:40px;text-align:center;color:var(--muted);font-size:14px;">
+          Aucun article pour le moment. Ajoutez votre premier article avec l'éditeur.
+        </div>
+      </div>
+    </div>
+
+    <!-- COLONNE DROITE — LINKEDIN -->
+    <div>
+      <div class="li-card">
+        <h2>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2" style="vertical-align:middle;margin-right:6px;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Prévisualisation LinkedIn
+        </h2>
+        <p class="sub">Le post se formate automatiquement au fur et à mesure de votre saisie.</p>
+
+        <div class="li-preview empty" id="li-preview">
+          Commencez à rédiger votre article pour voir la prévisualisation LinkedIn...
+        </div>
+
+        <div class="li-stats">
+          <div class="li-stat" id="li-stat-chars">📊 0 / 3000 caractères</div>
+          <div class="li-stat" id="li-stat-tags">🏷️ 0 hashtags</div>
+        </div>
+
+        <button class="btn-copy-li" id="btn-copy-main" onclick="copyToLinkedin(this, null)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Copier ce post pour LinkedIn
+        </button>
+        <div class="li-sep">— puis —</div>
+        <a class="btn-open-li" href="https://www.linkedin.com/feed/" target="_blank">
+          Ouvrir LinkedIn →
+        </a>
+
+        <div style="background:#F0F9FF;border-radius:10px;padding:14px;font-size:12px;color:#1E3A8A;line-height:1.7;margin-top:14px;">
+          <strong>📋 Workflow LinkedIn :</strong><br>
+          1. Cliquez <strong>Copier ce post</strong><br>
+          2. Ouvrez LinkedIn ci-dessus<br>
+          3. Cliquez <strong>Démarrer un post</strong><br>
+          4. Collez avec <strong>⌘V</strong><br>
+          5. Publiez !
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+// AUTHENTIFICATION
+// ════════════════════════════════════════════
+const USERS = {
+  'patrick': 'edecl2026',
+  'admin':   'edecl2026'
+};
+
+let currentUser = null;
+
+function doLogin() {
+  var u = document.getElementById('login-user').value.trim().toLowerCase();
+  var p = document.getElementById('login-pass').value;
+  var err = document.getElementById('login-error');
+  if (USERS[u] && USERS[u] === p) {
+    currentUser = u;
+    err.style.display = 'none';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    document.getElementById('admin-name').textContent = 'Connecté : ' + u;
+    renderArticles();
+    updatePreview();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-pass').focus();
+  }
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+// ════════════════════════════════════════════
+// ARTICLES
+// ════════════════════════════════════════════
+var ARTICLES = [];
+
+function getToday() {
+  var d = new Date();
+  var m = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  return d.getDate() + ' ' + m[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function addArticle() {
+  var title = document.getElementById('art-title').value.trim();
+  var body  = document.getElementById('art-body').value.trim();
+  var cat   = document.getElementById('art-cat').value;
+  var date  = document.getElementById('art-date').value.trim() || getToday();
+  var tags  = document.getElementById('art-hashtags').value.trim();
+  if (!title) { alert('Veuillez saisir un titre.'); document.getElementById('art-title').focus(); return; }
+  if (!body)  { alert('Veuillez saisir le contenu.'); document.getElementById('art-body').focus(); return; }
+  ARTICLES.push({title:title, body:body, cat:cat, date:date, tags:tags});
+  renderArticles();
+  clearForm();
+  var toast = document.getElementById('success-toast');
+  toast.style.display = 'block';
+  setTimeout(function(){ toast.style.display = 'none'; }, 3000);
+}
+
+function deleteArticle(idx) {
+  if (!confirm('Supprimer cet article définitivement ?')) return;
+  ARTICLES.splice(idx, 1);
+  renderArticles();
+}
+
+function renderArticles() {
+  var list = document.getElementById('articles-list');
+  var none = document.getElementById('no-articles');
+  document.getElementById('art-count').textContent = ARTICLES.length;
+  if (ARTICLES.length === 0) {
+    list.innerHTML = '';
+    none.style.display = 'block';
+    return;
+  }
+  none.style.display = 'none';
+  list.innerHTML = ARTICLES.slice().reverse().map(function(a, ri) {
+    var idx = ARTICLES.length - 1 - ri;
+    return '<div class="article-item">' +
+      '<div class="article-item-content">' +
+        '<span class="cat-pill">' + esc(a.cat) + '</span>' +
+        '<h3>' + esc(a.title) + '</h3>' +
+        '<p>' + esc(a.body).substring(0, 120) + (a.body.length > 120 ? '...' : '') + '</p>' +
+        '<p style="font-size:11px;color:#9BA8D4;margin-top:6px;">' + esc(a.date) + '</p>' +
+      '</div>' +
+      '<div class="article-item-actions">' +
+        '<button class="btn-li-item" onclick="copyToLinkedin(this,' + idx + ')">Copier LinkedIn</button>' +
+        '<button class="btn-del" onclick="deleteArticle(' + idx + ')">Supprimer</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function clearForm() {
+  ['art-title','art-body','art-date'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('art-cat').selectedIndex = 0;
+  document.getElementById('art-hashtags').value = '#Formalités #GuichetUnique #eDéclaration #DématFacile #Formaliste #LegalTech';
+  updatePreview();
+  updateCharCount();
+}
+
+// ════════════════════════════════════════════
+// LINKEDIN PREVIEW & COPY
+// ════════════════════════════════════════════
+function buildLinkedinText(article) {
+  var title, body, tags;
+  if (article) {
+    title = article.title;
+    body  = article.body;
+    tags  = article.tags || '#Formalités #GuichetUnique #eDéclaration #DématFacile';
+  } else {
+    title = document.getElementById('art-title').value.trim();
+    body  = document.getElementById('art-body').value.trim();
+    tags  = document.getElementById('art-hashtags').value.trim();
+  }
+  if (!title && !body) return '';
+  var extract = body.length > 800 ? body.substring(0, 800) + '...' : body;
+  return '📌 ' + title + '\n\n' +
+         extract + '\n\n' +
+         '🔗 Retrouvez tous nos articles sur edeclaration.fr\n\n' +
+         tags;
+}
+
+function updatePreview() {
+  var text = buildLinkedinText(null);
+  var prev = document.getElementById('li-preview');
+  var statChars = document.getElementById('li-stat-chars');
+  var statTags  = document.getElementById('li-stat-tags');
+  if (!text) {
+    prev.textContent = 'Commencez à rédiger votre article pour voir la prévisualisation LinkedIn...';
+    prev.classList.add('empty');
+    statChars.textContent = '📊 0 / 3000 caractères';
+    statChars.className = 'li-stat';
+    statTags.textContent = '🏷️ 0 hashtags';
+    return;
+  }
+  prev.textContent = text;
+  prev.classList.remove('empty');
+  var len = text.length;
+  var tags = (text.match(/#\w+/g) || []).length;
+  statChars.textContent = '📊 ' + len + ' / 3000 caractères';
+  statChars.className = 'li-stat ' + (len > 3000 ? 'over' : len > 2500 ? 'warn' : 'ok');
+  statTags.textContent = '🏷️ ' + tags + ' hashtag' + (tags > 1 ? 's' : '');
+  statTags.className = 'li-stat ' + (tags > 0 ? 'ok' : '');
+}
+
+function updateCharCount() {
+  var body = document.getElementById('art-body').value;
+  var cc = document.getElementById('char-count');
+  var n = body.length;
+  cc.textContent = n + ' caractère' + (n > 1 ? 's' : '');
+  cc.className = 'char-count ' + (n > 2000 ? 'over' : n > 1500 ? 'warn' : '');
+}
+
+function copyToLinkedin(btn, idx) {
+  var article = (idx !== null && idx !== undefined) ? ARTICLES[idx] : null;
+  var text = buildLinkedinText(article);
+  if (!text) { alert('Aucun contenu à copier.'); return; }
+  function doCopy(t) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function() { showCopied(btn); }).catch(function() { fallbackCopy(t, btn); });
+    } else { fallbackCopy(t, btn); }
+  }
+  function fallbackCopy(t, b) {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); showCopied(b); } catch(e) { alert('Impossible de copier automatiquement. Utilisez Ctrl+C après avoir sélectionné le texte.'); }
+    document.body.removeChild(ta);
+  }
+  function showCopied(b) {
+    var orig = b.innerHTML;
+    var origClass = b.className;
+    b.innerHTML = '✅ Copié !';
+    b.classList.add('copied');
+    setTimeout(function() { b.innerHTML = orig; b.className = origClass; }, 3000);
+  }
+  doCopy(text);
+}
+
+// ════════════════════════════════════════════
+// TÉLÉCHARGER ACTUALITES.HTML
+// ════════════════════════════════════════════
+function downloadPage() {
+  if (ARTICLES.length === 0 && !confirm('Aucun article ajouté. Télécharger quand même ?')) return;
+  // Génère le HTML complet de la page actualites.html avec les articles embarqués
+  var articlesJson = JSON.stringify(ARTICLES);
+  // Lit la page actuelle (admin) et génère une page publique
+  // Pour simplifier : on injecte les articles dans un template minimal
+  var html = generateActualitesHTML(ARTICLES);
+  var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'actualites.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function generateActualitesHTML(articles) {
+  var CAT_COLORS = {
+    'Guichet Unique':   ['#E6F1FB','#1840B0'],
+    'RNE':              ['#EAF3DE','#27500A'],
+    'Réglementation':   ['#FEF3DC','#A06800'],
+    'Formalités':       ['#F3E8FF','#7C3AED'],
+    'Marché':           ['#FEE2E2','#DC2626'],
+    'IA & Innovation':  ['#FFF7ED','#C2410C'],
+    'Actualité':        ['#F0F9FF','#1840B0'],
+    'Annonces légales': ['#ECFDF5','#059669'],
+    'eDéclaration':     ['#EEF2FF','#4338CA'],
+  };
+  function catBadge(cat) {
+    var c = CAT_COLORS[cat] || ['#F1F5F9','#475569'];
+    return '<span style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:'+c[0]+';color:'+c[1]+';padding:3px 10px;border-radius:100px;">'+escH(cat)+'</span>';
+  }
+  function escH(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var cardsHtml = articles.length === 0
+    ? '<div style="background:white;border:0.5px dashed #DDE4F5;border-radius:16px;padding:56px 32px;text-align:center;color:#6B7399;"><div style="font-size:48px;margin-bottom:16px;">📰</div><h3 style="font-size:18px;font-weight:800;color:#0E1A3A;margin-bottom:8px;">Aucun article pour le moment</h3><p>Revenez bientôt pour découvrir nos prochaines publications.</p></div>'
+    : articles.slice().reverse().map(function(a,i){
+        var idx = articles.length-1-i;
+        return '<article data-cat="'+escH(a.cat)+'" style="background:white;border:0.5px solid #DDE4F5;border-radius:16px;padding:32px;border-left:4px solid #1840B0;margin-bottom:24px;">'+
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;">'+catBadge(a.cat)+'<span style="font-size:12px;color:#6B7399;">'+escH(a.date)+'</span></div>'+
+          '<h2 style="font-size:20px;font-weight:800;color:#0E1A3A;letter-spacing:-0.4px;margin-bottom:12px;line-height:1.3;">'+escH(a.title)+'</h2>'+
+          '<div style="font-size:14.5px;color:#2C3356;line-height:1.85;white-space:pre-line;">'+escH(a.body)+'</div>'+
+          '<div style="margin-top:20px;padding-top:16px;border-top:0.5px solid #DDE4F5;">'+
+            '<a href="contact.html" style="font-size:13px;font-weight:700;color:#1840B0;text-decoration:none;background:#F0F5FF;border:0.5px solid #B5D4F4;border-radius:8px;padding:8px 16px;">Demander une démonstration →</a>'+
+          '</div>'+
+        '</article>';
+      }).join('');
+
+  return '<!DOCTYPE html>\n<html lang="fr">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>Actualités — eFormalités™</title>\n<meta name="description" content="Actualités et guides sur les formalités d\'entreprises, le Guichet Unique et le RNE.">\n<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">\n<style>\n*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}\nbody{font-family:"Plus Jakarta Sans",sans-serif;background:#F7F9FF;color:#2C3356;line-height:1.7;}\n.page-hero{background:linear-gradient(135deg,#0E1A3A 0%,#1840B0 100%);padding:64px 2rem 56px;text-align:center;}\n.page-hero h1{font-size:clamp(28px,4vw,46px);font-weight:800;color:white;letter-spacing:-1.2px;margin-bottom:12px;}\n.page-hero h1 span{color:#F5A623;}\n.page-hero p{font-size:16px;color:rgba(255,255,255,0.7);max-width:560px;margin:0 auto;}\n.main{max-width:860px;margin:0 auto;padding:56px 2rem 80px;}\n.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;}\n.filt-btn{background:white;border:0.5px solid #DDE4F5;border-radius:100px;padding:7px 16px;font-family:inherit;font-size:12.5px;font-weight:600;color:#6B7399;cursor:pointer;transition:all 0.15s;}\n.filt-btn.active,.filt-btn:hover{background:#1840B0;color:white;border-color:#1840B0;}\narticle.hidden{display:none;}\n</style>\n</head>\n<body>\n<div class="page-hero">\n  <h1>Actualités &amp; <span>ressources</span></h1>\n  <p>Guides pratiques et actualités sur les formalités d\'entreprises, le Guichet Unique et le RNE.</p>\n</div>\n<div class="main">\n  <div class="filters" id="filters"></div>\n  <div id="articles">'+cardsHtml+'</div>\n</div>\n<script>\nvar cats=[...new Set('+JSON.stringify(articles.map(function(a){return a.cat;}))+')];var fb=document.getElementById("filters");fb.innerHTML=\'<button class="filt-btn active" onclick="filt(this,\'all\')">Tous</button>\'+cats.map(function(c){return\'<button class="filt-btn" onclick="filt(this,\\\'\'+c+\'\\\')">\'+c+\'</button>\';}).join(\'\');function filt(b,c){document.querySelectorAll(".filt-btn").forEach(function(x){x.classList.remove("active");});b.classList.add("active");document.querySelectorAll("#articles article").forEach(function(a){a.classList.toggle("hidden",c!=="all"&&a.dataset.cat!==c);});}\n<\/script>\n</body>\n</html>';
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Init
+document.getElementById('login-user').focus();
+</script>
+</body>
+</html>
